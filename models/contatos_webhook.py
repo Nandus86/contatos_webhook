@@ -105,6 +105,7 @@ class ContatosWebhook(models.Model):
             'text': self.get_final_text()
         }
 
+
         try:
             response = requests.post(webhook_url, json=data)
             response.raise_for_status()
