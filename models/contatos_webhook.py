@@ -2,6 +2,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 import requests
+import json
+import random
 
 class ContatosWebhook(models.Model):
     _name = 'contatos.webhook'
@@ -93,29 +95,28 @@ class ContatosWebhook(models.Model):
         final_text = ""
         
         if self.use_default_text:
+            texts = []
             default_text = config.get_param('contatos_webhook.default_text', '')
-            final_text += default_text
-
+            if default_text:
+                texts.append(default_text)
             if config.get_param('contatos_webhook.use_default_text_2'):
                 text2 = config.get_param('contatos_webhook.default_text_2', '')
                 if text2:
-                    final_text += "\n" + text2
-
+                    texts.append(text2)
             if config.get_param('contatos_webhook.use_default_text_3'):
                 text3 = config.get_param('contatos_webhook.default_text_3', '')
                 if text3:
-                    final_text += "\n" + text3
-
+                    texts.append(text3)
             if config.get_param('contatos_webhook.use_default_text_4'):
                 text4 = config.get_param('contatos_webhook.default_text_4', '')
                 if text4:
-                    final_text += "\n" + text4
-
+                   texts.append(text4)
+            if texts:
+                final_text = random.choice(texts)
         if self.custom_text:
             if final_text:
-                final_text += "\n"
+                final_text +="\n"
             final_text += self.custom_text
-
         return final_text
 
     def _send_webhook(self):
