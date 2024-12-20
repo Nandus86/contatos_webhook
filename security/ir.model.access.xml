@@ -2,7 +2,7 @@
     <data noupdate="1">
         <record id="access_contatos_webhook" model="ir.model.access">
             <field name="name">access_contatos_webhook</field>
-            <field name="model_id" ref="model_x_contatos_webhook"/>
+            <field name="model_id" eval="ref('ir.model').search([('model','=','x_contatos_webhook')]).id"/>
             <field name="group_id" ref="base.group_user"/>
             <field name="perm_read" eval="1"/>
             <field name="perm_write" eval="1"/>
