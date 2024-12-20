@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 import requests
@@ -6,6 +7,7 @@ class ContatosWebhook(models.Model):
     _name = 'contatos.webhook'
     _description = 'Contatos Webhook'
     _order = 'status,create_date desc'
+    _module = 'contatos_webhook'
 
     selected = fields.Boolean(string='Selecionado')
     name = fields.Char(string='Nome', required=True)
@@ -20,12 +22,29 @@ class ContatosWebhook(models.Model):
     ], string='Status', default='not_sent', readonly=True)
     resend = fields.Boolean(string='Reenviar')
     partner_id = fields.Many2one('res.partner', string='Contato')
-    text = fields.Text(string='Texto Final', compute='_compute_text', store=True)
+    text = fields.Text(string='Texto Final', compute='_compute_texts', store=True)
+    text_2 = fields.Text(string='Texto Padrão 2', compute='_compute_texts', store=True)
+    text_3 = fields.Text(string='Texto Padrão 3', compute='_compute_texts', store=True)
+    text_4 = fields.Text(string='Texto Padrão 4', compute='_compute_texts', store=True)
 
     @api.depends('use_default_text', 'custom_text')
-    def _compute_text(self):
+    def _compute_texts(self):
         for record in self:
             record.text = record.get_final_text()
+            config = self.env['ir.config_parameter'].sudo()
+            if config.get_param('contatos_webhook.use_default_text_2'):
+                 record.text_2 = config.get_param('contatos_webhook.default_text_2', '')
+            else:
+                 record.text_2 = False
+            if config.get_param('contatos_webhook.use_default_text_3'):
+                 record.text_3 = config.get_param('contatos_webhook.default_text_3', '')
+            else:
+                 record.text_3 = False
+            if config.get_param('contatos_webhook.use_default_text_4'):
+                 record.text_4 = config.get_param('contatos_webhook.default_text_4', '')
+            else:
+                 record.text_4 = False
+
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
@@ -117,3 +136,15 @@ class ContatosWebhook(models.Model):
             return True
         except Exception as e:
             raise UserError(f'Erro ao enviar webhook: {str(e)}')
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    default_text = fields.Text(string="Texto Padrão", config_parameter='contatos_webhook.default_text')
+    default_text_2 = fields.Text(string="Texto Padrão 2", config_parameter='contatos_webhook.default_text_2')
+    default_text_3 = fields.Text(string="Texto Padrão 3", config_parameter='contatos_webhook.default_text_3')
+    default_text_4 = fields.Text(string="Texto Padrão 4", config_parameter='contatos_webhook.default_text_4')
+    use_default_text_2 = fields.Boolean(string="Usar Texto Padrão 2", config_parameter='contatos_webhook.use_default_text_2')
+    use_default_text_3 = fields.Boolean(string="Usar Texto Padrão 3", config_parameter='contatos_webhook.use_default_text_3')
+    use_default_text_4 = fields.Boolean(string="Usar Texto Padrão 4", config_parameter='contatos_webhook.use_default_text_4')
+    webhook_url = fields.Char(string="URL do Webhook", config_parameter='contatos_webhook.webhook_url')
