@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+         <record id="model_x_contatos_webhook" model="ir.model">
+            <field name="name">Contatos Webhook</field>
+            <field name="model">x_contatos_webhook</field>
+        </record>
+    </data>
+</odoo>

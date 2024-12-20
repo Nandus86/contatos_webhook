@@ -6,6 +6,7 @@ import json
 class ContatosWebhook(models.Model):
     _name = 'x_contatos_webhook'
     _description = 'Contatos Recebidos por Webhook'
+    _module = 'contatos_webhook'
 
     # Colunas da Tabela
     name = fields.Char(string='Nome', required=True)
