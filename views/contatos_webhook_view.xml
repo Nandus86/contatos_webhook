@@ -1,24 +1,22 @@
-# -*- coding: utf-8 -*-
 <odoo>
     <data>
 
-        <!-- View Tree/List (Visualização da Lista de Contatos) -->
-        <record id="view_contatos_webhook_tree" model="ir.ui.view"> <!-- Define o ID da View -->
-            <field name="name">x_contatos_webhook.tree</field>     <!-- Define o nome da View -->
-            <field name="model">x_contatos_webhook</field>          <!-- Define o modelo que a View usa -->
-            <field name="arch" type="xml">                         <!-- Define a estrutura da View -->
-                <tree editable="bottom"> <!-- Define que a view é editável na linha -->
-                    <field name="id" invisible="1"/>  <!-- Campo ID invisível-->
-                    <field name="partner_id" string="Contato" widget="many2one_avatar_user" options="{'no_open': True, 'no_create': True}"/> <!-- Campo do contato do res.partner com o widget de avatar-->
-                    <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>  <!-- Campo de texto para o nome com readonly caso exista parceiro-->
-                    <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>  <!-- Campo de texto para o whatsapp com readonly caso exista parceiro-->
-                    <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/> <!-- Campo de texto para o e-mail com readonly caso exista parceiro-->
-                    <field name="use_default_text" string="Usar Padrão"/>   <!-- Checkbox para usar o texto padrão -->
-                    <field name="custom_text" string="Texto Personalizado"/>  <!-- Campo para o texto personalizado-->
-                    <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/> <!-- Badge para o status com cores diferentes-->
-                    <field name="resend" string="Reenviar"/>   <!-- Checkbox para reenviar -->
-                    <field name="sent_text" invisible="1"/>  <!-- Campo texto invisível para texto enviado -->
-                     <!-- Botões para ações -->
+        <!-- View Tree/List -->
+        <record id="view_contatos_webhook_tree" model="ir.ui.view">
+            <field name="name">x_contatos_webhook.tree</field>
+            <field name="model">x_contatos_webhook</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                     <field name="id" invisible="1"/>
+                    <field name="partner_id" string="Contato" widget="many2one_avatar_user" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
+                    <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
+                    <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
+                    <field name="use_default_text" string="Usar Padrão"/>
+                    <field name="custom_text" string="Texto Personalizado"/>
+                    <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/>
+                    <field name="resend" string="Reenviar"/>
+                    <field name="sent_text" invisible="1"/>
                     <button name="mark_as_sent" type="object" string="Marcar Como Enviado" class="oe_highlight"
                             attrs="{'invisible': [('status', '!=', 'not_sent')]}"/>
                     <button name="mark_as_not_sent" type="object" string="Marcar Como Não Enviado" class="oe_highlight"
@@ -28,54 +26,54 @@
                     <button name="send_webhook" type="object" string="Enviar Linha" class="oe_highlight"/>
                     <button name="unlink" type="object" string="Excluir Linha" class="oe_highlight"/>
                 </tree>
-                 <header> <!-- Header da view -->
-                    <button name="load_webhook_data" string="Carregar Contatos Webhook" type="object" class="oe_highlight"/>  <!-- Botão para carregar os contatos do webhook -->
+                <header>
+                    <button name="load_webhook_data" string="Carregar Contatos Webhook" type="object" class="oe_highlight"/>
                 </header>
             </field>
         </record>
 
-        <!-- View Form (Visualização do Formulário de Edição/Criação) -->
-        <record id="view_contatos_webhook_form" model="ir.ui.view"> <!-- Define o ID da View -->
-            <field name="name">x_contatos_webhook.form</field>      <!-- Define o nome da View -->
-            <field name="model">x_contatos_webhook</field>          <!-- Define o modelo que a View usa -->
-            <field name="arch" type="xml">                         <!-- Define a estrutura da View -->
-                <form>  <!-- Define que a view é um formulário -->
-                     <sheet> <!-- Define a estrutura do formulário -->
-                        <group> <!-- Agrupamento dos campos -->
-                            <field name="partner_id" string="Contato" options="{'no_open': True, 'no_create': True}"/> <!-- Campo do contato do res.partner sem abrir e criar-->
-                            <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>  <!-- Campo de texto para o nome com readonly caso exista parceiro-->
-                            <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>  <!-- Campo de texto para o whatsapp com readonly caso exista parceiro-->
-                            <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/> <!-- Campo de texto para o e-mail com readonly caso exista parceiro-->
+        <!-- View Form -->
+        <record id="view_contatos_webhook_form" model="ir.ui.view">
+            <field name="name">x_contatos_webhook.form</field>
+            <field name="model">x_contatos_webhook</field>
+            <field name="arch" type="xml">
+                <form>
+                     <sheet>
+                        <group>
+                            <field name="partner_id" string="Contato" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
+                            <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
+                            <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
                          </group>
-                        <group> <!-- Agrupamento dos campos -->
-                             <field name="use_default_text" string="Usar Padrão"/>   <!-- Checkbox para usar o texto padrão -->
-                            <field name="custom_text" string="Texto Personalizado"/>  <!-- Campo para o texto personalizado-->
-                            <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/> <!-- Badge para o status com cores diferentes-->
-                             <field name="sent_text" readonly="1" string="Texto Enviado"/> <!-- Campo de texto para o texto enviado com readonly-->
+                        <group>
+                             <field name="use_default_text" string="Usar Padrão"/>
+                            <field name="custom_text" string="Texto Personalizado"/>
+                            <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/>
+                             <field name="sent_text" readonly="1" string="Texto Enviado"/>
                         </group>
                      </sheet>
                 </form>
             </field>
         </record>
         
-       <!-- Action to open list view (Ação para abrir a view de lista) -->
-        <record id="action_contatos_webhook" model="ir.actions.act_window">  <!-- Define o ID da Action -->
-            <field name="name">Contatos Webhook</field>             <!-- Define o nome da Action -->
-            <field name="res_model">x_contatos_webhook</field>      <!-- Define o modelo que a Action usa -->
-            <field name="view_mode">tree,form</field>                <!-- Define o modo de visualização (lista e formulário) -->
-             <field name="help" type="html">
+       <!-- Action to open list view -->
+        <record id="action_contatos_webhook" model="ir.actions.act_window">
+            <field name="name">Contatos Webhook</field>
+            <field name="res_model">x_contatos_webhook</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 Adicione um contato para começar!
               </p>
             </field>
         </record>
 
-        <!-- Menu item (Item de Menu) -->
+        <!-- Menu item -->
         <menuitem
-            id="menu_contatos_webhook"          
-            name="Contatos Webhook"          
-            action="action_contatos_webhook"   
-            sequence="10"                     
+            id="menu_contatos_webhook"
+            name="Contatos Webhook"
+            action="action_contatos_webhook"
+            sequence="10"
         />
 
     </data>
