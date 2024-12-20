@@ -26,7 +26,7 @@
                     <button name="send_webhook" type="object" string="Enviar Linha" class="oe_highlight"/>
                     <button name="unlink" type="object" string="Excluir Linha" class="oe_highlight"/>
                 </tree>
-                <header>
+                 <header>
                     <button name="load_webhook_data" string="Carregar Contatos Webhook" type="object" class="oe_highlight"/>
                 </header>
             </field>
@@ -55,8 +55,8 @@
                 </form>
             </field>
         </record>
-
-        <!-- Action to open list view -->
+        
+       <!-- Action to open list view -->
         <record id="action_contatos_webhook" model="ir.actions.act_window">
             <field name="name">Contatos Webhook</field>
             <field name="res_model">x_contatos_webhook</field>
