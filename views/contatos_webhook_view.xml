@@ -1,62 +1,17 @@
 <odoo>
     <data>
-
-        <!-- View Tree/List -->
+       <!-- View Tree/List -->
         <record id="view_contatos_webhook_tree" model="ir.ui.view">
             <field name="name">x_contatos_webhook.tree</field>
             <field name="model">x_contatos_webhook</field>
             <field name="arch" type="xml">
-                <tree editable="bottom">
-                     <field name="id" invisible="1"/>
-                    <field name="partner_id" string="Contato" widget="many2one_avatar_user" options="{'no_open': True, 'no_create': True}"/>
-                    <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                    <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                    <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                    <field name="use_default_text" string="Usar Padrão"/>
-                    <field name="custom_text" string="Texto Personalizado"/>
-                    <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/>
-                    <field name="resend" string="Reenviar"/>
-                    <field name="sent_text" invisible="1"/>
-                    <button name="mark_as_sent" type="object" string="Marcar Como Enviado" class="oe_highlight"
-                            attrs="{'invisible': [('status', '!=', 'not_sent')]}"/>
-                    <button name="mark_as_not_sent" type="object" string="Marcar Como Não Enviado" class="oe_highlight"
-                             attrs="{'invisible': [('status', '!=', 'sent')]}"/>
-                     <button name="reset_status" type="object" string="Resetar" class="oe_highlight"
-                             attrs="{'invisible': [('status', '!=', 'sent')]}"/>
-                    <button name="send_webhook" type="object" string="Enviar Linha" class="oe_highlight"/>
-                    <button name="unlink" type="object" string="Excluir Linha" class="oe_highlight"/>
+                <tree>
+                    <field name="name"/>
                 </tree>
-                 <header>
-                    <button name="load_webhook_data" string="Carregar Contatos Webhook" type="object" class="oe_highlight"/>
-                </header>
             </field>
         </record>
 
-        <!-- View Form -->
-        <record id="view_contatos_webhook_form" model="ir.ui.view">
-            <field name="name">x_contatos_webhook.form</field>
-            <field name="model">x_contatos_webhook</field>
-            <field name="arch" type="xml">
-                <form>
-                     <sheet>
-                        <group>
-                            <field name="partner_id" string="Contato" options="{'no_open': True, 'no_create': True}"/>
-                            <field name="name" string="Nome" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                            <field name="whatsapp" string="WhatsApp" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                            <field name="email" string="E-mail" attrs="{'readonly': [('partner_id', '!=', False)]}"/>
-                         </group>
-                        <group>
-                             <field name="use_default_text" string="Usar Padrão"/>
-                            <field name="custom_text" string="Texto Personalizado"/>
-                            <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'not_sent'"/>
-                             <field name="sent_text" readonly="1" string="Texto Enviado"/>
-                        </group>
-                     </sheet>
-                </form>
-            </field>
-        </record>
-        
-       <!-- Action to open list view -->
+        <!-- Action to open list view -->
         <record id="action_contatos_webhook" model="ir.actions.act_window">
             <field name="name">Contatos Webhook</field>
             <field name="res_model">x_contatos_webhook</field>
@@ -75,6 +30,5 @@
             action="action_contatos_webhook"
             sequence="10"
         />
-
     </data>
 </odoo>
