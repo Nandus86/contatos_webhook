@@ -61,7 +61,7 @@ class ContatosWebhook(models.Model):
             record._send_webhook()
             record.write({
                 'status': 'sent',
-                'sent_text': record.get_final_text(),
+                'sent_text': record.get('text'),
                 'selected': False
             })
 
@@ -70,7 +70,7 @@ class ContatosWebhook(models.Model):
         if self._send_webhook():
             self.write({
                 'status': 'sent',
-                'sent_text': self.get_final_text(),
+                'sent_text': self.get('text'),
                 'selected': False
             })
 
@@ -128,7 +128,7 @@ class ContatosWebhook(models.Model):
             'name': self.name,
             'whatsapp': self.whatsapp,
             'email': self.email,
-            'text': self.get_final_text()
+            'text': self.text
         }
 
         try:
