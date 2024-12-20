@@ -1,6 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import requests
-import json
 
 class ContatosWebhook(models.Model):
     _name = 'contatos.webhook'
@@ -20,6 +20,12 @@ class ContatosWebhook(models.Model):
     ], string='Status', default='not_sent', readonly=True)
     resend = fields.Boolean(string='Reenviar')
     partner_id = fields.Many2one('res.partner', string='Contato')
+    text = fields.Text(string='Texto Final', compute='_compute_text', store=True)
+
+    @api.depends('use_default_text', 'custom_text')
+    def _compute_text(self):
+        for record in self:
+            record.text = record.get_final_text()
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
