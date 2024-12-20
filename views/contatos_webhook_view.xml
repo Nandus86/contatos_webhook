@@ -1,7 +1,6 @@
 <odoo>
     <data>
 
-        <!-- View Tree/List -->
         <record id="view_contatos_webhook_tree" model="ir.ui.view">
             <field name="name">x_contatos_webhook.tree</field>
             <field name="model">x_contatos_webhook</field>
