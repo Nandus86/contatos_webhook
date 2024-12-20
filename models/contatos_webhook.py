@@ -61,7 +61,7 @@ class ContatosWebhook(models.Model):
             record._send_webhook()
             record.write({
                 'status': 'sent',
-                'sent_text': record.get('text'),
+                'sent_text': record.text,
                 'selected': False
             })
 
@@ -70,7 +70,7 @@ class ContatosWebhook(models.Model):
         if self._send_webhook():
             self.write({
                 'status': 'sent',
-                'sent_text': self.get('text'),
+                'sent_text': self.text,
                 'selected': False
             })
 
