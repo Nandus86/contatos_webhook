@@ -35,7 +35,6 @@ class ContatosWebhook(models.Model):
     default_text = fields.Text(string='Texto Padrão', compute='_compute_default_text', store=False)
 
 
-    # Campo Computado para Concatenar Textos
     @api.depends('use_default_text','default_text','custom_text')
     def _compute_combined_text(self):
         for record in self:
