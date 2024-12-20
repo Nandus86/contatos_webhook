@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contatos_webhook_user,contatos.webhook.user,model_contatos_webhook,base.group_user,1,1,1,1

@@ -1,18 +1,26 @@
 {
     'name': 'Contatos Webhook',
-    'version': '1.0',
-    'summary': 'Módulo para receber contatos via webhook e gerenciar envios.',
-    'description': 'Este módulo recebe dados de contatos via webhook, permite o gerenciamento dos envios e oferece uma interface para personalização das mensagens.',
+    'version': '16.0.1.0.0',
+    'summary': 'Módulo para receber contatos via webhook e gerenciar envios',
+    'description': '''
+        Módulo para gerenciamento de contatos recebidos via webhook.
+        Funcionalidades:
+        - Recebimento de contatos via webhook
+        - Gerenciamento de mensagens
+        - Envio personalizado de mensagens
+        - Integração com res.partner
+    ''',
     'category': 'Tools',
-    'author': 'Fernando Dias - v.1.21',
-    'depends': ['web','base_setup'],
+    'author': 'Fernando Dias - v.1.22',
+    'license': 'LGPL-3',
+    'depends': ['base', 'web', 'contacts'],
     'data': [
-        'data/model_data.xml',
-        'security/ir.model.access.xml',
-        'views/contatos_webhook_view.xml',
-        'views/config_settings_view.xml',
-        'data/config_settings_data.xml',
+        'security/ir.model.access.csv',
+        'views/contatos_webhook_views.xml',
+        'views/res_config_settings_views.xml',
+        'views/menu_views.xml',
     ],
+    'demo': [],
     'installable': True,
     'application': True,
     'auto_install': False,

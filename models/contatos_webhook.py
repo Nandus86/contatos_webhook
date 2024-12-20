@@ -1,111 +1,113 @@
-# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 import requests
 import json
 
 class ContatosWebhook(models.Model):
-    _name = 'x_contatos_webhook'
-    _description = 'Contatos Recebidos por Webhook'
-    _module = 'contatos_webhook'
+    _name = 'contatos.webhook'
+    _description = 'Contatos Webhook'
+    _order = 'status,create_date desc'
 
-    # Colunas da Tabela
+    selected = fields.Boolean(string='Selecionado')
     name = fields.Char(string='Nome', required=True)
     whatsapp = fields.Char(string='WhatsApp')
     email = fields.Char(string='E-mail')
-    use_default_text = fields.Boolean(string='Texto Padrão')
+    use_default_text = fields.Boolean(string='Usar Texto Padrão')
     custom_text = fields.Text(string='Texto Personalizado')
+    sent_text = fields.Text(string='Texto Enviado', readonly=True)
     status = fields.Selection([
         ('not_sent', 'Não Utilizado'),
-        ('sent', 'Utilizado'),
-    ], string='Status de Envio', default='not_sent', readonly=True)
-    
-    resend = fields.Boolean(string='Reenviar', default=False)
-    
-    # Relacionamento com res.partner
-    partner_id = fields.Many2one('res.partner', string='Contato', ondelete='set null')
-    
-    # Campo Computado para usar texto padrão
-    @api.depends('use_default_text')
-    def _compute_default_text(self):
-        for record in self:
-             if record.use_default_text:
-                 record.default_text = self.env['ir.config_parameter'].sudo().get_param('x_contatos_webhook.default_text', default='')
-             else:
-                 record.default_text = False
+        ('sent', 'Utilizado')
+    ], string='Status', default='not_sent', readonly=True)
+    resend = fields.Boolean(string='Reenviar')
+    partner_id = fields.Many2one('res.partner', string='Contato')
 
-    default_text = fields.Text(string='Texto Padrão', compute='_compute_default_text', store=False)
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.partner_id:
+            self.name = self.partner_id.name
+            self.whatsapp = self.partner_id.mobile or self.partner_id.phone
+            self.email = self.partner_id.email
 
+    def action_send_selected(self):
+        selected_records = self.search([('selected', '=', True), ('status', '=', 'not_sent')])
+        for record in selected_records:
+            record._send_webhook()
+            record.write({
+                'status': 'sent',
+                'sent_text': record.get_final_text(),
+                'selected': False
+            })
 
-    # Campo Computado para Concatenar Textos
-    @api.depends('use_default_text','default_text','custom_text')
-    def _compute_combined_text(self):
-        for record in self:
-            combined_text = ""
-            if record.use_default_text and record.default_text:
-                combined_text += record.default_text
-            if record.custom_text:
-                 if combined_text:
-                    combined_text +="\n"
-                 combined_text += record.custom_text
-            record.combined_text = combined_text
+    def action_send_single(self):
+        self.ensure_one()
+        if self._send_webhook():
+            self.write({
+                'status': 'sent',
+                'sent_text': self.get_final_text(),
+                'selected': False
+            })
 
-    combined_text = fields.Text(string='Texto Combinado', compute='_compute_combined_text', store=False)
+    def action_delete_selected(self):
+        self.search([('selected', '=', True)]).unlink()
 
-    
-    def mark_as_sent(self):
-        for record in self:
-            record.status = 'sent'
+    def action_delete_single(self):
+        self.ensure_one()
+        self.unlink()
 
-    def mark_as_not_sent(self):
-        for record in self:
-            record.status = 'not_sent'
+    def action_resend(self):
+        self.ensure_one()
+        self.write({
+            'status': 'not_sent',
+            'sent_text': False,
+            'resend': False
+        })
 
-    def reset_status(self):
-        for record in self:
-            record.status = 'not_sent'
-            record.resend = False
-            
-    # Campo que armazena o texto enviado
-    sent_text = fields.Text(string="Texto Enviado")
-    
-    # Método para enviar via webhook
-    def send_webhook(self):
-        # colocar aqui código para enviar para webhook
-        return True
+    def get_final_text(self):
+        self.ensure_one()
+        config = self.env['ir.config_parameter'].sudo()
+        final_text = ""
+        
+        if self.use_default_text:
+            default_text = config.get_param('contatos_webhook.default_text', '')
+            final_text += default_text
 
-    # Método para carregar dados do webhook
-    def load_webhook_data(self):
-        url = self.env['ir.config_parameter'].sudo().get_param('x_contatos_webhook.webhook_url')
-        if url:
-          response = requests.get(url)
-          if response.status_code == 200:
-             data = json.loads(response.text)
-             if isinstance(data, list):
-                for item in data:
-                    name = item.get('name')
-                    whatsapp = item.get('whatsapp')
-                    email = item.get('email')
+            if config.get_param('contatos_webhook.use_default_text_2'):
+                text2 = config.get_param('contatos_webhook.default_text_2', '')
+                if text2:
+                    final_text += "\n" + text2
 
-                    if name:
-                         self.create({
-                            'name': name,
-                            'whatsapp': whatsapp,
-                            'email': email
-                         })
-          else:
-             raise Exception(f'Erro ao buscar dados do webhook: {response.status_code}')
+            if config.get_param('contatos_webhook.use_default_text_3'):
+                text3 = config.get_param('contatos_webhook.default_text_3', '')
+                if text3:
+                    final_text += "\n" + text3
 
-        else:
-            raise Exception('URL do Webhook não configurada!')
+            if config.get_param('contatos_webhook.use_default_text_4'):
+                text4 = config.get_param('contatos_webhook.default_text_4', '')
+                if text4:
+                    final_text += "\n" + text4
 
-class ResConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+        if self.custom_text:
+            if final_text:
+                final_text += "\n"
+            final_text += self.custom_text
 
-    default_text = fields.Text(string="Texto Padrão", config_parameter='contatos_webhook.default_text')
-    default_text_2 = fields.Text(string="Texto Padrão 2", config_parameter='contatos_webhook.default_text_2')
-    default_text_3 = fields.Text(string="Texto Padrão 3", config_parameter='contatos_webhook.default_text_3')
-    default_text_4 = fields.Text(string="Texto Padrão 4", config_parameter='contatos_webhook.default_text_4')
-    use_default_text_2 = fields.Boolean(string="Usar Texto Padrão 2", config_parameter='contatos_webhook.use_default_text_2')
-    use_default_text_3 = fields.Boolean(string="Usar Texto Padrão 3", config_parameter='contatos_webhook.use_default_text_3')
-    use_default_text_4 = fields.Boolean(string="Usar Texto Padrão 4", config_parameter='contatos_webhook.use_default_text_4')
-    webhook_url = fields.Char(string="URL do Webhook", config_parameter='contatos_webhook.webhook_url')
+        return final_text
+
+    def _send_webhook(self):
+        webhook_url = self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.webhook_url')
+        if not webhook_url:
+            raise UserError('URL do webhook não configurada!')
+
+        data = {
+            'name': self.name,
+            'whatsapp': self.whatsapp,
+            'email': self.email,
+            'text': self.get_final_text()
+        }
+
+        try:
+            response = requests.post(webhook_url, json=data)
+            response.raise_for_status()
+            return True
+        except Exception as e:
+            raise UserError(f'Erro ao enviar webhook: {str(e)}')
