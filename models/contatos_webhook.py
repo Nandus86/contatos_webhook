@@ -35,6 +35,7 @@ class ContatosWebhook(models.Model):
     default_text = fields.Text(string='Texto Padrão', compute='_compute_default_text', store=False)
 
 
+    # Campo Computado para Concatenar Textos
     @api.depends('use_default_text','default_text','custom_text')
     def _compute_combined_text(self):
         for record in self:
@@ -95,12 +96,6 @@ class ContatosWebhook(models.Model):
 
         else:
             raise Exception('URL do Webhook não configurada!')
-        
-    # Método que retorna o ID do modelo
-    @api.model
-    def get_model_id(self):
-        model = self.env['ir.model'].search([('model', '=', self._name)])
-        return model.id
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
