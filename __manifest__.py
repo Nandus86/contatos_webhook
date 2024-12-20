@@ -4,7 +4,7 @@
     'summary': 'Módulo para receber contatos via webhook e gerenciar envios.',
     'description': 'Este módulo recebe dados de contatos via webhook, permite o gerenciamento dos envios e oferece uma interface para personalização das mensagens.',
     'category': 'Tools',
-    'author': 'Fernando Dias',
+    'author': 'Fernando Dias de Oliveira',
     'depends': ['base','web','base_setup'],
     'data': [
         'security/ir.model.access.csv',
