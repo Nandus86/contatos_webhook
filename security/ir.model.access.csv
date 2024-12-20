@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contatos_webhook,access_contatos_webhook,model_x_contatos_webhook,,1,1,1,1

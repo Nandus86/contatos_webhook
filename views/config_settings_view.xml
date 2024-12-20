@@ -1,0 +1,62 @@
+# -*- coding: utf-8 -*-
+<odoo>
+    <data>
+          <record id="res_config_settings_view_form" model="ir.ui.view"> <!-- Define o ID da View -->
+            <field name="name">res.config.settings.view.form.inherit.contatos_webhook</field>  <!-- Define o nome da View -->
+            <field name="model">res.config.settings</field>       <!-- Define o modelo que a View usa -->
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>  <!-- Define que a View herda de base_setup -->
+            <field name="arch" type="xml">                           <!-- Define a estrutura da View -->
+                <xpath expr="//div[hasclass('settings')]" position="inside"> <!-- Insere os campos abaixo na view -->
+                    <div class="app_settings_block" data-string="Contatos Webhook" string="Contatos Webhook" data-key="x_contatos_webhook"> <!-- Agrupa os campos em um bloco -->
+                          <h2>Textos Padrão</h2> <!-- Título do bloco -->
+                        <div class="row mt16 o_settings_container"> <!-- Define o layout dos campos -->
+                             <div class="col-12 col-lg-6 o_setting_box"> <!-- Define o layout dos campos -->
+                                 <div class="o_setting_left_pane"> <!-- Divisão esquerda -->
+                                     <field name="use_default_text_2"/>  <!-- Campo checkbox para usar texto padrão 2-->
+                                 </div>
+                                 <div class="o_setting_right_pane"> <!-- Divisão direita-->
+                                    <label for="default_text_2"/>  <!-- Label do campo de texto -->
+                                    <field name="default_text_2" attrs="{'required': [('use_default_text_2','=', True)]}"/> <!-- Campo de texto para o texto padrão 2-->
+                                 </div>
+                             </div>
+                             <div class="col-12 col-lg-6 o_setting_box"> <!-- Define o layout dos campos -->
+                                 <div class="o_setting_left_pane">  <!-- Divisão esquerda -->
+                                    <field name="use_default_text_3"/> <!-- Campo checkbox para usar texto padrão 3-->
+                                 </div>
+                                 <div class="o_setting_right_pane"> <!-- Divisão direita-->
+                                     <label for="default_text_3"/> <!-- Label do campo de texto -->
+                                     <field name="default_text_3"  attrs="{'required': [('use_default_text_3','=', True)]}"/>  <!-- Campo de texto para o texto padrão 3-->
+                                 </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box"> <!-- Define o layout dos campos -->
+                                  <div class="o_setting_left_pane"> <!-- Divisão esquerda -->
+                                   <field name="use_default_text_4"/>  <!-- Campo checkbox para usar texto padrão 4-->
+                                 </div>
+                                <div class="o_setting_right_pane"> <!-- Divisão direita-->
+                                     <label for="default_text_4"/>  <!-- Label do campo de texto -->
+                                    <field name="default_text_4" attrs="{'required': [('use_default_text_4','=', True)]}"/>  <!-- Campo de texto para o texto padrão 4-->
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box"> <!-- Define o layout dos campos -->
+                               <div class="o_setting_left_pane"> <!-- Divisão esquerda -->
+                                   <label for="default_text" string="Texto Padrão"/> <!-- Label do campo de texto -->
+                                 </div>
+                                <div class="o_setting_right_pane"> <!-- Divisão direita-->
+                                    <field name="default_text" />  <!-- Campo de texto para o texto padrão -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box"> <!-- Define o layout dos campos -->
+                               <div class="o_setting_left_pane">  <!-- Divisão esquerda -->
+                                   <label for="webhook_url" string="URL do Webhook"/> <!-- Label do campo de texto -->
+                                 </div>
+                                <div class="o_setting_right_pane"> <!-- Divisão direita-->
+                                    <field name="webhook_url" /> <!-- Campo de texto para a URL do webhook -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
