@@ -99,31 +99,12 @@ class ContatosWebhook(models.Model):
         webhook_url = self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.webhook_url')
         if not webhook_url:
             raise UserError('URL do webhook não configurada!')
-        
-        config = self.env['ir.config_parameter'].sudo()
-        final_text = "default"
-        if record.use_default_text:
-            texts = []
-            default_text = config.get_param('contatos_webhook.default_text')
-            if default_text:
-                texts.append(default_text)
-            for i in range(2, 5):
-                if config.get_param(f'contatos_webhook.use_default_text_{i}'):
-                    text = config.get_param(f'contatos_webhook.default_text_{i}')
-                    if text:
-                        texts.append(text)
-            if texts:
-                final_text = random.choice(texts)
-        if record.custom_text:
-            if final_text:
-                final_text += "\n"
-            final_text += record.custom_text
 
         data = {
             'name': record.name,
             'whatsapp': record.whatsapp,
             'email': record.email,
-            'text': final_text
+            'text': self._get_final_text(record)
         }
 
         try:
