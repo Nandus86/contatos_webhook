@@ -35,16 +35,17 @@ class ContatosWebhook(models.Model):
     def action_send_selected(self):
         selected_records = self.search([('selected', '=', True), ('status', '=', 'not_sent')])
         for record in selected_records:
-            record._send_webhook()
-            record.write({
-                'status': 'sent',
-                'sent_text': self._get_final_text(record),
-                'selected': False
+            if self._send_webhook(record):
+                record.write({
+                    'status': 'sent',
+                    'sent_text': self._get_final_text(record),
+                    'selected': False
             })
+
 
     def action_send_single(self):
         self.ensure_one()
-        if self._send_webhook():
+        if self._send_webhook(self):
             self.write({
                 'status': 'sent',
                 'sent_text': self._get_final_text(self),
@@ -65,6 +66,34 @@ class ContatosWebhook(models.Model):
             'sent_text': False,
             'resend': False
         })
+
+    def _get_final_text(self, record):
+            config = self.env['ir.config_parameter'].sudo()
+            final_text = ""
+            if record.use_default_text:
+                texts = []
+                default_text = config.get_param('contatos_webhook.default_text', '')
+                if default_text:
+                    texts.append(default_text)
+                if config.get_param('contatos_webhook.use_default_text_2'):
+                    text2 = config.get_param('contatos_webhook.default_text_2', '')
+                    if text2:
+                        texts.append(text2)
+                if config.get_param('contatos_webhook.use_default_text_3'):
+                    text3 = config.get_param('contatos_webhook.default_text_3', '')
+                    if text3:
+                        texts.append(text3)
+                if config.get_param('contatos_webhook.use_default_text_4'):
+                    text4 = config.get_param('contatos_webhook.default_text_4', '')
+                    if text4:
+                       texts.append(text4)
+                if texts:
+                    final_text = random.choice(texts)
+            if record.custom_text:
+                if final_text:
+                    final_text +="\n"
+                final_text += record.custom_text
+            return final_text
 
     def _send_webhook(self, record):
         webhook_url = self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.webhook_url')
@@ -91,9 +120,9 @@ class ContatosWebhook(models.Model):
             final_text += record.custom_text
 
         data = {
-            'name': self.name,
-            'whatsapp': self.whatsapp,
-            'email': self.email,
+            'name': record.name,
+            'whatsapp': record.whatsapp,
+            'email': record.email,
             'text': final_text
         }
 
