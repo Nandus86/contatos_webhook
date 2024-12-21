@@ -67,32 +67,25 @@ class ContatosWebhook(models.Model):
         })
 
     def _get_final_text(self, record):
-            config = self.env['ir.config_parameter'].sudo()
-            final_text = ""
-            if record.use_default_text:
-                texts = []
-                default_text = config.get_param('contatos_webhook.default_text', '')
-                if default_text:
-                    texts.append(default_text)
-                if config.get_param('contatos_webhook.use_default_text_2'):
-                    text2 = config.get_param('contatos_webhook.default_text_2', '')
-                    if text2:
-                        texts.append(text2)
-                if config.get_param('contatos_webhook.use_default_text_3'):
-                    text3 = config.get_param('contatos_webhook.default_text_3', '')
-                    if text3:
-                        texts.append(text3)
-                if config.get_param('contatos_webhook.use_default_text_4'):
-                    text4 = config.get_param('contatos_webhook.default_text_4', '')
-                    if text4:
-                       texts.append(text4)
-                if texts:
-                    final_text = random.choice(texts)
-            if record.custom_text:
-                if final_text:
-                    final_text +="\n"
-                final_text += record.custom_text
-            return final_text
+        config = self.env['ir.config_parameter'].sudo()
+        final_text = ""
+        if record.use_default_text:
+            texts = []
+            default_text = config.get_param('contatos_webhook.default_text', '')
+            if default_text:
+                texts.append(default_text)
+            for i in range(2, 5):
+                if config.get_param(f'contatos_webhook.use_default_text_{i}'):
+                    text = config.get_param(f'contatos_webhook.default_text_{i}', '')
+                    if text:
+                        texts.append(text)
+            if texts:
+                final_text = random.choice(texts)
+        if record.custom_text:
+            if final_text:
+                final_text += "\n"
+            final_text += record.custom_text
+        return final_text
 
     def _send_webhook(self):
         webhook_url = self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.webhook_url')
