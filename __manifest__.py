@@ -11,7 +11,7 @@
         - Integração com res.partner
     ''',
     'category': 'Tools',
-    'author': 'Fernando Dias - v.1.37',
+    'author': 'Fernando Dias - v.1.38',
     'license': 'LGPL-3',
     'depends': ['base', 'web', 'contacts'],
     'data': [
