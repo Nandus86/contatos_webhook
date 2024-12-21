@@ -106,7 +106,12 @@ class ContatosWebhook(models.Model):
             'email': record.email,
             'text': self._get_final_text(record),
             'texto_padrao': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text'),
-            'texto_padrao_b': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_2')
+            'texto_padrao_2': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_2'),
+            'texto_padrao_3': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_3'),
+            'texto_padrao_4': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_4'),
+            'texto_padrao_b': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_2'),
+            'texto_padrao_c': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_3'),
+            'texto_padrao_d': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_4')
         }
 
         try:
