@@ -105,7 +105,8 @@ class ContatosWebhook(models.Model):
             'whatsapp': record.whatsapp,
             'email': record.email,
             'text': self._get_final_text(record),
-            'texto_padrao': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text')
+            'texto_padrao': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text'),
+            'texto_padrao_b': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_2')
         }
 
         try:
