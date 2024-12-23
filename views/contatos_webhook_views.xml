@@ -52,7 +52,7 @@
     </record>
 
     <record id="action_contatos_webhook" model="ir.actions.act_window">
-        <field name="name">Contatos Webhook</field>
+        <field name="name">Contatos WebScraping</field>
         <field name="res_model">contatos.webhook</field>
         <field name="view_mode">tree,form</field>
     </record>
