@@ -10,22 +10,22 @@ class ResConfigSettings(models.TransientModel):
     
     default_text = fields.Text(
         string='Texto Padrão',
-        default_model='contatos.webhook'
+        default_model='contatos.webhook.default_text'
     )
     
     default_text_2 = fields.Text(
         string='Texto Padrão 2',
-        default_model='contatos.webhook'
+        default_model='contatos.webhook.default_text_2'
     )
     
     default_text_3 = fields.Text(
         string='Texto Padrão 3',
-        default_model='contatos.webhook'
+        default_model='contatos.webhook.default_text_3'
     )
     
     default_text_4 = fields.Text(
         string='Texto Padrão 4',
-        default_model='contatos.webhook'
+        default_model='contatos.webhook.default_text_4'
     )
     
     use_default_text_2 = fields.Boolean(
@@ -46,7 +46,7 @@ class ResConfigSettings(models.TransientModel):
     @api.model
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
-        ICPSudo = self.env['ir.config_parameter'].sudo()
+        ICPSudo = self.env['res.config.settings'].sudo()
         
         res.update(
             webhook_url=ICPSudo.get_param('contatos_webhook.webhook_url', default=''),
@@ -58,7 +58,7 @@ class ResConfigSettings(models.TransientModel):
 
     def set_values(self):
         super(ResConfigSettings, self).set_values()
-        ICPSudo = self.env['ir.config_parameter'].sudo()
+        ICPSudo = self.env['res.config.settings'].sudo()
         
         ICPSudo.set_param('contatos_webhook.webhook_url', self.webhook_url or '')
         ICPSudo.set_param('contatos_webhook.use_default_text_2', self.use_default_text_2)

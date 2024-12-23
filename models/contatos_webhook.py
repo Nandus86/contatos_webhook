@@ -68,7 +68,7 @@ class ContatosWebhook(models.Model):
         })
 
     def _get_final_text(self, record):
-            config = self.env['ir.config_parameter'].sudo()
+            config = self.env['res.config.settings'].sudo()
             final_text = ""
             if record.use_default_text:
                 texts = []
@@ -96,7 +96,7 @@ class ContatosWebhook(models.Model):
             return final_text
 
     def _send_webhook(self, record):
-        webhook_url = self.env['ir.config_parameter'].sudo().get_param('res_config_settings.webhook_url')
+        webhook_url = self.env['res.config.settings'].sudo().get_param('contatos_webhook.webhook_url')
         if not webhook_url:
             raise UserError('URL do webhook não configurada!')
 
@@ -105,13 +105,13 @@ class ContatosWebhook(models.Model):
             'whatsapp': record.whatsapp,
             'email': record.email,
             'text': self._get_final_text(record),
-            'texto_padrao': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text'),
-            'texto_padrao_2': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_2'),
-            'texto_padrao_3': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_3'),
-            'texto_padrao_4': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.default_text_4'),
-            'texto_padrao_b': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_2'),
-            'texto_padrao_c': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_3'),
-            'texto_padrao_d': self.env['ir.config_parameter'].sudo().get_param('contatos_webhook.use_default_text_4')
+            'texto_padrao': self.env['res.config.settings'].sudo().get_param('contatos_webhook.default_text'),
+            'texto_padrao_2': self.env['res.config.settings'].sudo().get_param('contatos_webhook.default_text_2'),
+            'texto_padrao_3': self.env['res.config.settings'].sudo().get_param('contatos_webhook.default_text_3'),
+            'texto_padrao_4': self.env['res.config.settings'].sudo().get_param('contatos_webhook.default_text_4'),
+            'texto_padrao_b': self.env['res.config.settings'].sudo().get_param('contatos_webhook.use_default_text_2'),
+            'texto_padrao_c': self.env['res.config.settings'].sudo().get_param('contatos_webhook.use_default_text_3'),
+            'texto_padrao_d': self.env['res.config.settings'].sudo().get_param('contatos_webhook.use_default_text_4')
         }
 
         try:
@@ -131,4 +131,4 @@ class ResConfigSettings(models.TransientModel):
     use_default_text_2 = fields.Boolean(string="Usar Texto Padrão 2", config_parameter='contatos_webhook.use_default_text_2')
     use_default_text_3 = fields.Boolean(string="Usar Texto Padrão 3", config_parameter='contatos_webhook.use_default_text_3')
     use_default_text_4 = fields.Boolean(string="Usar Texto Padrão 4", config_parameter='contatos_webhook.use_default_text_4')
-    webhook_url = fields.Char(string="URL do Webhook", config_parameter='res_config_settings.webhook_url')
+    webhook_url = fields.Char(string="URL do Webhook", config_parameter='contatos_webhook.webhook_url')
