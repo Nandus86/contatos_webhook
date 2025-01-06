@@ -24,6 +24,7 @@ class ContatosWebhook(models.Model):
     ], string='Status', default='not_sent', readonly=True)
     resend = fields.Boolean(string='Reenviar')
     partner_id = fields.Many2one('res.partner', string='Contato')
+    default_text = fields.Text(string="Default Text")
     
     @api.onchange('partner_id')
     def _onchange_partner_id(self):

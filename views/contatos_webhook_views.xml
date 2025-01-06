@@ -39,6 +39,7 @@
                             <field name="partner_id"/>
                         </group>
                         <group>
+                            <field name="default_text"/>
                             <field name="use_default_text"/>
                             <field name="custom_text"/>
                             <field name="sent_text" readonly="1"/>
