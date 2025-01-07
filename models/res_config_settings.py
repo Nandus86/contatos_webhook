@@ -9,23 +9,19 @@ class ResConfigSettings(models.TransientModel):
     )
     
     default_text = fields.Text(
-        string='Texto Padrão',
-        default_model='contatos_webhook.default_text'
+        string='Texto Padrão'
     )
     
     default_text_2 = fields.Text(
-        string='Texto Padrão 2',
-        default_model='contatos_webhook.default_text_2'
+        string='Texto Padrão 2'
     )
     
     default_text_3 = fields.Text(
-        string='Texto Padrão 3',
-        default_model='contatos_webhook.default_text_3'
+        string='Texto Padrão 3'
     )
     
     default_text_4 = fields.Text(
-        string='Texto Padrão 4',
-        default_model='contatos_webhook.default_text_4'
+        string='Texto Padrão 4'
     )
     
     use_default_text_2 = fields.Boolean(
