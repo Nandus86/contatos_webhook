@@ -9,25 +9,25 @@ class ResConfigSettings(models.TransientModel):
         default_model='contatos_webhook.webhook_url'
     )
     
-    default_text = fields.Text(
+    default_text = fields.Char(
         string='Texto Padrão',
         config_parameter='contatos_webhook.default_text',
         default_model='contatos_webhook.default_text'
     )
     
-    default_text_2 = fields.Text(
+    default_text_2 = fields.Char(
         string='Texto Padrão 2',
         config_parameter='contatos_webhook.default_text_2',
         default_model='contatos_webhook.default_text_2'
     )
     
-    default_text_3 = fields.Text(
+    default_text_3 = fields.Char(
         string='Texto Padrão 3',
         config_parameter='contatos_webhook.default_text_3',
         default_model='contatos_webhook.default_text_3'
     )
     
-    default_text_4 = fields.Text(
+    default_text_4 = fields.Char(
         string='Texto Padrão 4',
         config_parameter='contatos_webhook.default_text_4',
         default_model='contatos_webhook.default_text_4'

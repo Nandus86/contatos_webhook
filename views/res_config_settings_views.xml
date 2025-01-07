@@ -37,7 +37,7 @@
                     <div class="row mt16 o_settings_container">
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <field name="default_text" placeholder="Digite o texto padrão principal..."/>
+                                <field name="default_text" class="o_field_char" placeholder="Digite o texto padrão principal..."/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
@@ -45,7 +45,7 @@
                                 <field name="use_default_text_2"/>
                             </div>
                             <div class="o_setting_right_pane">
-                                <field name="default_text_2" placeholder="Digite o texto padrão 2..."/>
+                                <field name="default_text_2" class="o_field_char" placeholder="Digite o texto padrão 2..."/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
@@ -53,7 +53,7 @@
                                 <field name="use_default_text_3"/>
                             </div>
                             <div class="o_setting_right_pane">
-                                <field name="default_text_3" placeholder="Digite o texto padrão 3..."/>
+                                <field name="default_text_3" class="o_field_char" placeholder="Digite o texto padrão 3..."/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
@@ -61,7 +61,7 @@
                                 <field name="use_default_text_4"/>
                             </div>
                             <div class="o_setting_right_pane">
-                                <field name="default_text_4" placeholder="Digite o texto padrão 4..."/>
+                                <field name="default_text_4" class="o_field_char" placeholder="Digite o texto padrão 4..."/>
                             </div>
                         </div>
                     </div>
