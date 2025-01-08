@@ -6,49 +6,57 @@ class ResConfigSettings(models.TransientModel):
     webhook_url = fields.Char(
         string='URL do Webhook',
         config_parameter='contatos_webhook.webhook_url',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='webhook_url'  # adicionando default_field
     )
     
     default_text = fields.Char(
         string='Texto Padrão',
         config_parameter='contatos_webhook.default_text',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='text'  # adicionando default_field
     )
     
     default_text_2 = fields.Char(
         string='Texto Padrão 2',
         config_parameter='contatos_webhook.default_text_2',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='text_2'  # adicionando default_field
     )
     
     default_text_3 = fields.Char(
         string='Texto Padrão 3',
         config_parameter='contatos_webhook.default_text_3',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='text_3'  # adicionando default_field
     )
     
     default_text_4 = fields.Char(
         string='Texto Padrão 4',
         config_parameter='contatos_webhook.default_text_4',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='text_4'  # adicionando default_field
     )
     
     use_default_text_2 = fields.Boolean(
         string='Ativar Texto 2',
         config_parameter='contatos_webhook.use_default_text_2',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='use_text_2'  # adicionando default_field
     )
     
     use_default_text_3 = fields.Boolean(
         string='Ativar Texto 3',
         config_parameter='contatos_webhook.use_default_text_3',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='use_text_3'  # adicionando default_field
     )
     
     use_default_text_4 = fields.Boolean(
         string='Ativar Texto 4',
         config_parameter='contatos_webhook.use_default_text_4',
-        default_model='contatos_webhook.config'
+        default_model='contatos_webhook.config',
+        default_field='use_text_4'  # adicionando default_field
     )
 
     @api.model
